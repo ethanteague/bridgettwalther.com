@@ -1,0 +1,231 @@
+<?php
+
+/**
+ * @file
+ * Module file for walther_custom.
+ */
+
+
+/**
+ * Implements hook_block_info().
+ */
+function walther_custom_block_info() {
+
+  $block = array();
+
+  $block['graphs'] = array(
+    'info' => t('Love and Career Meters'),
+  );
+
+  $block['banner_one'] = array(
+    'info' => t('Banner One'),
+  );
+
+  $block['banner_two'] = array(
+    'info' => t('Banner Two'),
+  );
+
+  $block['banner_three'] = array(
+    'info' => t('Banner Three'),
+  );
+
+  return $block;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function walther_custom_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'page_node_form') {
+    $string = $form['field_tags']['und']['#default_value'];
+    $needle = 'Daily';
+    if (strpos($string, $needle) == FALSE) {
+      unset($form['field_love_paragraph']);
+      unset($form['field_career_paragraph']);
+      unset($form['field_love_meter_number']);
+      unset($form['field_career_meter_number']);
+    }
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function walther_custom_block_view($block_key) {
+  require_once dirname(__FILE__) . '/walther_custom_graphs.inc';
+  switch ($block_key) {
+    case 'graphs':
+      $block['subject'] = 'Graphs';
+      $block['content'] =  walther_custom_graphs_base();
+      break;
+
+    case 'banner_one':
+      $block['subject'] = 'Banner Ad One';
+      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Position 1 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-1616542149818988"
+     data-ad-slot="1922075178"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>';
+      break;
+
+    case 'banner_two':
+      $block['subject'] = 'Banner Ad Two';
+      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Position 2 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-1616542149818988"
+     data-ad-slot="3398808378"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>';
+      break;
+
+    case 'banner_three':
+      $block['subject'] = 'Banner Ad Three';
+      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Position 3 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-1616542149818988"
+     data-ad-slot="4875541574"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>';
+      break;
+
+    default:
+      '';
+  }
+  return $block;
+}
+
+
+function walther_custom_get_users_by_rolename(){
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'user');
+  //$query->propertyCondition('uid', 0, '!=');
+  $query->addTag('rolequery');
+  $query->addMetaData('rolename', 'administrator');
+
+  return $query->execute();
+}
+
+function walther_custom_query_rolequery_alter(QueryAlterableInterface $query) {
+  $rolename = $query->getMetaData('rolename');
+
+  $role_subquery = db_select("role", "role");
+  $role_subquery->condition('role.name', $rolename, '=');
+  $role_subquery->join('users_roles', "users_to_include", "role.rid = users_to_include.rid");
+  $role_subquery->fields('users_to_include', array('uid' => 'uid'));
+  $role_subquery->where('users_to_include.uid = users.uid');
+  $query->exists($role_subquery);
+}
+
+/**
+ * Remove a role from a user.
+ *
+ * @param $user
+ *   User object or user ID.
+ * @param $role_name
+ *   String value of role to be removed.
+ */
+function walther_custom_remove_role_from_user($user, $role_name) {
+  // For convenience, we'll allow user ids as well as full user objects.
+  if (is_numeric($user)) {
+    $user = user_load($user);
+  }
+  // Only remove the role if the user already has it.
+  $key = array_search($role_name, $user->roles);
+  if ($key == TRUE) {
+    // Get the rid from the roles table.
+    $roles = user_roles(TRUE);
+    $rid = array_search($role_name, $roles);
+    if ($rid != FALSE) {
+      // Make a copy of the roles array, without the deleted one.
+      $new_roles = array();
+      foreach($user->roles as $id => $name) {
+        if ($id != $rid) {
+          $new_roles[$id] = $name;
+        }
+      }
+      user_save($user, array('roles' => $new_roles));
+    }
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function walther_custom_cron() {
+
+  // Establish our dates.
+  $date_m = strtotime('-32 day', time());
+  $date_m = date('Y-m-d', $date_m);
+  $date_y = strtotime('-367 day', time());
+  $date_y = date('Y-m-d', $date_y);
+
+  // Grab users who did not pay monthly rate in the last month who need to be tagged as such.
+  $query_m_unpaid = new EntityFieldQuery();
+  $query_m_unpaid->entityCondition('entity_type', 'user')
+                 ->fieldCondition('field_last_payment_date', 'value', $date_m, '<=')
+                 ->fieldCondition('field_last_payment_amt', 'value', array('3', '6'), 'BETWEEN');
+  $result_m_unpaid = $query_m_unpaid->execute();
+
+  // Grab users who did not pay yearly rate in the last year who need to be tagged as such.
+  $query_y_unpaid = new EntityFieldQuery();
+  $query_y_unpaid->entityCondition('entity_type', 'user')
+                 ->fieldCondition('field_last_payment_date', 'value', $date_y, '<=')
+                 ->fieldCondition('field_last_payment_amt', 'value', array('39', '60'), 'BETWEEN');
+  $result_y_unpaid = $query_y_unpaid->execute();
+  $unpaid_user_ids = array_merge(!empty($result_m_unpaid['user']) ?
+                     array_keys($result_m_unpaid['user']) : array(),
+                     !empty($result_y_unpaid['user']) ?
+                     array_keys($result_y_unpaid['user']) : array());
+  $unpaid_users_loaded = user_load_multiple($unpaid_user_ids);
+  foreach ($unpaid_users_loaded as $unpaid_user) {
+    walther_custom_remove_role_from_user($unpaid_user, 'premium');
+    user_save($unpaid_user);
+  }
+
+
+/**
+ * Uncomment below block to check for users who are current who need to have
+ * premium tag added.  Should not be necessary after initial bulk
+ * user import.
+ */
+
+  /*
+// Grab users who paid monthly rate in the last month who need to be tagged as such.
+$query_m = new EntityFieldQuery();
+$query_m->entityCondition('entity_type', 'user')
+->fieldCondition('field_last_payment_date', 'value', $date_m, '>')
+->fieldCondition('field_last_payment_amt', 'value', array('3', '6'), 'BETWEEN');
+$result_m = $query_m->execute();
+
+// Grab users who paid yearly rate in the last year who need to be tagged as such.
+$query_y = new EntityFieldQuery();
+$query_y->entityCondition('entity_type', 'user')
+->fieldCondition('field_last_payment_date', 'value', $date_y, '>')
+->fieldCondition('field_last_payment_amt', 'value', array('39', '60'), 'BETWEEN');
+$result_y = $query_y->execute();
+
+$paid_user_ids = array_merge(!empty($result_m['user']) ?
+array_keys($result_m['user']) : array(),
+!empty($result_y['user']) ?
+array_keys($result_y['user']) : array());
+}
+
+$paid_users_loaded = user_load_multiple($paid_user_ids);
+foreach ($paid_users_loaded as $paid_user) {
+$paid_user->roles[5] = 'premium';
+user_save($paid_user);
+}
+  */
+
+}

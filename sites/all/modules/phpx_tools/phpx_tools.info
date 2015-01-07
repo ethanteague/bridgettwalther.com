@@ -1,0 +1,6 @@
+name = PHP Execute Extended Tools
+description = PHP Execute History and Saved Scripts + Codemirror integration
+core = 7.x
+package = Development
+
+dependencies[] = devel
