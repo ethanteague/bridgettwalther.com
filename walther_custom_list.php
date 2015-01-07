@@ -11,49 +11,51 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
  */
 $raw_post_data = file_get_contents('php://input');
 $raw_post_array = explode('&', $raw_post_data);
-$myPost = array();
+$my_post = array();
 foreach ($raw_post_array as $keyval) {
-  $keyval = explode ('=', $keyval);
-  if (count($keyval) == 2)
-    $myPost[$keyval[0]] = urldecode($keyval[1]);
+  $keyval = explode('=', $keyval);
+  if (count($keyval) == 2) {
+    $my_post[$keyval[0]] = urldecode($keyval[1]);
+  }
 }
 
-// read the IPN message sent from PayPal and prepend cmd=_notify-validate
+// Read the IPN message sent from PayPal and prepend cmd=_notify-validate.
 $req = 'cmd=_notify-validate';
-if(function_exists('get_magic_quotes_gpc')) {
-  $get_magic_quotes_exists = true;
+if (function_exists('get_magic_quotes_gpc')) {
+  $get_magic_quotes_exists = TRUE;
 }
 
-foreach ($myPost as $key => $value) {
-  if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
+foreach ($my_post as $key => $value) {
+  if ($get_magic_quotes_exists == TRUE && get_magic_quotes_gpc() == 1) {
     $value = urlencode(stripslashes($value));
-  } else {
+  }
+  else {
     $value = urlencode($value);
   }
   $req .= "&$key=$value";
 }
 
-// STEP 2: POST IPN data back to PayPal to validate
+// STEP 2: POST IPN data back to PayPal to validate.
 $ch = curl_init('https://www.sandbox.paypal.com/cgi-bin/webscr');
 curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 
-if( !($res = curl_exec($ch)) ) {
+if (!($res = curl_exec($ch))) {
   curl_close($ch);
   exit;
 }
 curl_close($ch);
 
-// STEP 3: Inspect IPN validation result and act accordingly
-if (strcmp ($res, "VERIFIED") == 0) {
+// STEP 3: Inspect IPN validation result and act accordingly.
+if (strcmp($res, "VERIFIED") == 0) {
 
-  // assign posted variables to local variables
+  // Assign posted variables to local variables.
   if (!empty($_POST['custom'])) {
     $user = user_load($_POST['custom']);
   }
@@ -63,7 +65,7 @@ if (strcmp ($res, "VERIFIED") == 0) {
     $query->entityCondition('entity_type', 'user')
           ->fieldCondition('field_paypal_trans_id_field', 'value', $sub_id, '=');
     $result = $query->execute();
-    foreach($result['user'] as $user_id) {
+    foreach ($result['user'] as $user_id) {
       $uid_load = $user_id->uid;
     }
     $user = user_load($uid_load);
@@ -83,7 +85,7 @@ if (strcmp ($res, "VERIFIED") == 0) {
   user_save($user);
 }
 
-else if (strcmp ($res, "INVALID") == 0) {
-  // IPN invalid, log for manual investigation
-  echo "The response from IPN was: <b>" .$res ."</b>";
+elseif (strcmp($res, "INVALID") == 0) {
+  // IPN invalid, log for manual investigation.
+  echo 'The response from IPN was: <b>' . $res . '</b>';
 }

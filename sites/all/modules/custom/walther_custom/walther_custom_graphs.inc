@@ -8,7 +8,6 @@
 /**
  * Base svg builder function.
  */
-
 function walther_custom_graphs_base() {
   $o_node = node_load(arg(1));
   $love_val = !empty($o_node->field_love_meter_number['und'][0]['value']) ?
@@ -49,7 +48,6 @@ function walther_custom_graphs_base() {
     return $graph->Fetch('CylinderGraph');
   }
   else {
-  return '';
+    return '';
   }
-
 }
