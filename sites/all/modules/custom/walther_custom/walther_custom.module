@@ -60,13 +60,12 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
-// afterbuild function
+// Afterbuild function.
 function walther_custom_node_form_after_build($form) {
-    // We want this on a specific field
-    $form['body']['und']['0']['format']['#access'] = FALSE;
-    $form['field_love_paragraph']['und']['0']['format']['#access'] = FALSE;
-    $form['field_career_paragraph']['und']['0']['format']['#access'] = FALSE;
-    return $form;
+  $form['body']['und']['0']['format']['#access'] = FALSE;
+  $form['field_love_paragraph']['und']['0']['format']['#access'] = FALSE;
+  $form['field_career_paragraph']['und']['0']['format']['#access'] = FALSE;
+  return $form;
 }
 
 /**
