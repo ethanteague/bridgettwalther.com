@@ -40,6 +40,7 @@
 
 html {
   background: $page;
+  overflow-x: hidden;
 }
 
 body {
@@ -47,6 +48,13 @@ body {
   font-family: $sans-serif-small; // Set from _custom.scss font variables
   font-size: 110%;
   line-height:150%;
+  @include window_size(desktop){
+  }
+}
+
+hr {
+  border:1px lighten($green, 15%) dashed;
+  height: auto;
 }
 
 /* Ethan additions */
@@ -58,17 +66,16 @@ body {
   position:absolute;
   width:100%;
   background:$charcoal;
-  height:130px;
+  height:205px;
   z-index:-1;
   top:0;
 }
 #faux-bottom {
   bottom: 0;
-  position:fixed;
   width:100%;
   background:$charcoal;
-  height:70px;
-  display:none;
+  height:90px;
+  //display:none;
   z-index:1;
   @include window_size(desktop) {
     display:block;
@@ -81,22 +88,53 @@ body {
   }
 }
 .pane-clone-of-clone-of-zodiac {
-  width:960px;
+  background: $charcoal;
+  @media all and (min-width: 960px){
+    width:960px;
+  }
   margin:0 auto;
   position:relative;
+  bottom:-100px;
   z-index:2;
+  margin-bottom:0;
 }
 #page-wrapper {
   max-width:1140px;
   margin:0 auto;
 }
-#mini-panel-banners {  
+#mini-panel-banners {
   padding-bottom:55px;
 }
+
+.front .walther-body {
+  border-bottom:$blueish solid 1px;
+}
+
 .walther-header {
   background: $charcoal;
   font-family: $serif-large;
   color: $grey;
+  .block {
+    margin-bottom: 0;
+  }
+  .pane-3 {
+    margin: 0 auto;
+    display: table;
+    &.walther-logo-mini {
+      display:block;
+    }
+  }
+  .pane-4 {
+    margin: 0 auto;
+    display: table;
+    &.walther-logo-mini {
+      display:block;
+    }
+  }
+  .pane-5,.pane-6 {
+    margin:0 auto;
+    display:table;
+  }
   h1 {
     font-size: 38px;
     margin: 0;
@@ -104,21 +142,58 @@ body {
   h4 {
     text-indent: 50px;
     font-size:22px;
-    font-weight:bold;
   }
-  a {
+  a, a:link, a.visited, a:visited {
     color: $gold;
   }
+  .item-list.item-list-main-menu {
+    position:relative;
+    .menu-toggle {
+      float:right;
+      position: absolute;
+      right: 00px;
+      top:-40px;
+      .toggle-help {
+	display: none;
+      }
+    }
+  }
 }
+#mini-panel-site_header{
+  h4{
+    margin: 10px;
+  }
+  .region-two-66-33-second{
+    @include window_size(desktop){
+      p{
+      }
+    }
+  }
+}
+
+
 .walther-feature {
-  font-weight:bold;
-  font-size:22px;
-  //text-align:center;
+  font-size:14px;
   margin:0 auto;
-  width:300px
+  p {
+    float:left;
+    margin-bottom:0;
+    @include window_size(desktop){
+      margin-right: 0 !important;
+    }
+    a {
+      text-align:center;
+      display:block;
+      clear:both;
+      max-width: 100px;
+    }
+  }
 }
+
 .walther-body {
-  //max-width:1140px;
+  h2.block-title {
+    display: block;
+  }
   margin:0 auto;
   background: none;
   img {
@@ -145,15 +220,15 @@ ul.responsive-menu.links {
   display: block;
   margin: 0 auto;
   padding:0;
-  background: $charcoal;
   width: 100%;
   li {
     display:block;
-    float:left;
-    width: 20%;
     padding-left:0;
     padding-right:0;
     margin:0;
+    @media all and (min-width: 740px){
+      float:left;
+    }
     border-bottom: $gold 1px solid;
     .sub-menu {
       li {
@@ -178,14 +253,9 @@ ul.responsive-menu.links {
 
 /* Mini-Panels */
 #mini-panel-clone_of_clone_of_zodiac {
-  position: fixed;
   bottom:0;
-  background: $charcoal;
   margin:0 auto;
-  display: table;
-  max-width:100%;
   text-align:center;
-  display:none;
   @include window_size(desktop) {
     display:block;
   }
@@ -703,21 +773,26 @@ ul.links {
  * ========================================================================== */
 
 a {
+  color: $light_green;
   text-decoration: none;
 
   &:link,
-  &:visited {}
+  &:visited {
+    color: $light_green;
+  }
 
   &:active,
   &.active {}
 
   &:hover,
   &:focus {
-    text-decoration: underline;
+    color: darken($light_green, 20%);
   }
 }
 
-
+ul.links li.node-readmore {
+  float:right;
+}
 /* =============================================================================
  *   Primary, Secondary and Menu Bar region menus
  * ========================================================================== */

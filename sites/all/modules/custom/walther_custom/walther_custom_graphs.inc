@@ -8,8 +8,9 @@
 /**
  * Base svg builder function.
  */
-function walther_custom_graphs_base() {
-  $o_node = node_load(arg(1));
+function walther_custom_graphs_base($nid) {
+
+  $o_node = node_load($nid);
   $love_val = !empty($o_node->field_love_meter_number['und'][0]['value']) ?
     $o_node->field_love_meter_number['und'][0]['value'] : '';
   $career_val = !empty($o_node->field_career_meter_number['und'][0]['value']) ?

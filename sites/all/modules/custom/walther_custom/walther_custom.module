@@ -17,6 +17,10 @@ function walther_custom_block_info() {
     'info' => t('Love and Career Meters'),
   );
 
+  $block['graphs_feature'] = array(
+    'info' => t('Daily Love and Career Meters'),
+  );
+
   $block['banner_one'] = array(
     'info' => t('Banner One'),
   );
@@ -53,17 +57,22 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_block_view().
  */
 function walther_custom_block_view($block_key) {
+  drupal_add_js('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', array('type' => 'external', 'scope' => 'footer'));
   require_once dirname(__FILE__) . '/walther_custom_graphs.inc';
   switch ($block_key) {
+    case 'graphs_feature':
+      $block['subject'] = 'Daily Love and Career Meters';
+      $block['content'] = walther_custom_graphs_base(18);
+      break;
+
     case 'graphs':
       $block['subject'] = 'Graphs';
-      $block['content'] =  walther_custom_graphs_base();
+      $block['content'] = walther_custom_graphs_base(arg(1));
       break;
 
     case 'banner_one':
       $block['subject'] = 'Banner Ad One';
-      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Position 1 -->
+      $block['content'] = '<!-- Position 1 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:300px;height:250px"
      data-ad-client="ca-pub-1616542149818988"
@@ -75,8 +84,7 @@ function walther_custom_block_view($block_key) {
 
     case 'banner_two':
       $block['subject'] = 'Banner Ad Two';
-      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Position 2 -->
+      $block['content'] = '<!-- Position 2 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:300px;height:250px"
      data-ad-client="ca-pub-1616542149818988"
@@ -88,8 +96,7 @@ function walther_custom_block_view($block_key) {
 
     case 'banner_three':
       $block['subject'] = 'Banner Ad Three';
-      $block['content'] = '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Position 3 -->
+      $block['content'] = '<!-- Position 3 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:300px;height:250px"
      data-ad-client="ca-pub-1616542149818988"
