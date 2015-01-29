@@ -43,8 +43,6 @@ function walther_custom_block_info() {
 function walther_custom_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'page_node_form') {
     global $user;
-    dpm($user);
-    dpm($form);
     if (!(in_array('administrator', $user->roles))) {
       $form['field_tags']['#access'] = 0;
       $form['#after_build'][] = 'walther_custom_node_form_after_build';
