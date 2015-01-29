@@ -42,6 +42,15 @@ function walther_custom_block_info() {
  */
 function walther_custom_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'page_node_form') {
+    global $user;
+    dpm($user);
+    dpm($form);
+    if (!(in_array('administrator', $user->roles))) {
+      $form['field_tags']['#access'] = 0;
+      $form['#after_build'][] = 'walther_custom_node_form_after_build';
+    }
+    $form['field_love_paragraph']['und'][0]['#format'] = 'filtered_html';
+    $form['field_career_paragraph']['und'][0]['#format'] = 'filtered_html';
     $string = $form['field_tags']['und']['#default_value'];
     $needle = 'Daily';
     if (strpos($string, $needle) == FALSE) {
@@ -51,6 +60,15 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
       unset($form['field_career_meter_number']);
     }
   }
+}
+
+// afterbuild function
+function walther_custom_node_form_after_build($form) {
+    // We want this on a specific field
+    $form['body']['und']['0']['format']['#access'] = FALSE;
+    $form['field_love_paragraph']['und']['0']['format']['#access'] = FALSE;
+    $form['field_career_paragraph']['und']['0']['format']['#access'] = FALSE;
+    return $form;
 }
 
 /**
