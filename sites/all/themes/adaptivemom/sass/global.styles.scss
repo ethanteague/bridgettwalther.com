@@ -111,8 +111,9 @@ hr {
 }
 
 .walther-header {
-
- background: $charcoal image-url('galaxy.jpg') center center;
+  &.contextual-links-region.panel-pane.pane-panels-mini.pane-site-header {
+    background: $charcoal image-url('galaxy.jpg') center center;
+  }
  
   font-family: $serif-large;
   color: $grey;
