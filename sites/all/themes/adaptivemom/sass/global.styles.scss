@@ -74,7 +74,7 @@ hr {
   bottom: 0;
   width:100%;
   background:$charcoal;
-  height:90px;
+  height:250px;
   //display:none;
   z-index:1;
   @include window_size(desktop) {
@@ -94,7 +94,7 @@ hr {
   }
   margin:0 auto;
   position:relative;
-  bottom:-100px;
+  bottom:-250px;
   z-index:2;
   margin-bottom:0;
 }
@@ -230,6 +230,7 @@ ul.responsive-menu.links {
   margin: 0 auto;
   padding:0;
   width: 100%;
+  margin-top:15px;
   li {
     display:block;
     padding-left:0;
