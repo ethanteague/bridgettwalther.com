@@ -153,13 +153,13 @@ hr {
   display: block;
 }
 /* line 137, ../sass/global.styles.scss */
-.walther-header .pane-5, .walther-header .pane-6 {
+.walther-header .pane-5, .walther-header .pane-6, .walther-header .pane-7 {
   margin: 0 auto;
   display: table;
   background: none;
 }
 /* line 141, ../sass/global.styles.scss */
-.walther-header .pane-5.walther-logo-mini, .walther-header .pane-6.walther-logo-mini {
+.walther-header .pane-5.walther-logo-mini, .walther-header .pane-6.walther-logo-mini, .walther-header .pane-7.walther-logo-mini {
   display: block;
 }
 /* line 145, ../sass/global.styles.scss */
