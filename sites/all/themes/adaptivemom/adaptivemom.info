@@ -15,7 +15,7 @@
   ; See each stylesheet for extensive documentation and help.
   stylesheets[screen][] = css/global.base.css
   stylesheets[screen][] = css/global.styles.css
-
+  stylesheets[screen][] = css/responsive.custom.css
 
   ; Print - uncomment to load basic print styles.
   ; stylesheets[print][] = css/print.css
