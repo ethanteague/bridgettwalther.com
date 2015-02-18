@@ -145,7 +145,11 @@ hr {
   h1 {
     font-size: 38px;
     margin: 0;
+    @media all and (max-width: 500px) {
+      font-size:28px;
+    }
   }
+
   h4 {
     text-indent: 50px;
     font-size:22px;
@@ -160,6 +164,9 @@ hr {
       position: absolute;
       right: 00px;
       top:-40px;
+      @media all and (max-width: 500px) {
+	top:-47px;
+      }
       .toggle-help {
 	display: none;
       }
@@ -169,6 +176,9 @@ hr {
 #mini-panel-site_header{
   h4{
     margin: 10px;
+    @media all and (max-width: 500px) {
+      display:none;
+    }
   }
   .region-two-66-33-second{
     @include window_size(desktop){
