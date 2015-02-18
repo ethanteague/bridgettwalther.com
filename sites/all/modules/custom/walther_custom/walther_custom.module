@@ -36,6 +36,26 @@ function walther_custom_block_info() {
   return $block;
 }
 
+/**
+ * Implements hook_menu().
+ */
+function walther_custom_menu() {
+
+  $items['walther_custom_list.php'] = array(
+    'title' => 'Paypal IPN Listener',
+    'page callback' => 'walther_custom_menu_callback',
+    'access callback' => TRUE,
+    'file' => 'walther_custom_list.php',
+    //'delivery callback' => 'drupal_json_output',
+  );
+  return $items;
+}
+
+/**
+ * Nothing to see here.
+ */
+function walther_custom_menu_callback() {
+}
 
 /**
  * Implements hook_form_alter().

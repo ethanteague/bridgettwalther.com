@@ -1,9 +1,5 @@
 <?php
 
-define('DRUPAL_ROOT', getcwd());
-require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
-drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-
 /**
  * STEP 1: read POST data
  * Reading POSTed data directly from $_POST causes serialization issues with array data in the POST.
