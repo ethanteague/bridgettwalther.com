@@ -227,32 +227,33 @@ function walther_custom_cron() {
  * user import.
  */
 
-  /*
+
 // Grab users who paid monthly rate in the last month who need to be tagged as such.
-$query_m = new EntityFieldQuery();
-$query_m->entityCondition('entity_type', 'user')
-->fieldCondition('field_last_payment_date', 'value', $date_m, '>')
-->fieldCondition('field_last_payment_amt', 'value', array('3', '6'), 'BETWEEN');
-$result_m = $query_m->execute();
+  $query_m = new EntityFieldQuery();
+  $query_m->entityCondition('entity_type', 'user')
+          ->fieldCondition('field_last_payment_date', 'value', $date_m, '>')
+          ->fieldCondition('field_last_payment_amt', 'value', array('3', '6'), 'BETWEEN');
+  $result_m = $query_m->execute();
 
 // Grab users who paid yearly rate in the last year who need to be tagged as such.
-$query_y = new EntityFieldQuery();
-$query_y->entityCondition('entity_type', 'user')
-->fieldCondition('field_last_payment_date', 'value', $date_y, '>')
-->fieldCondition('field_last_payment_amt', 'value', array('39', '60'), 'BETWEEN');
-$result_y = $query_y->execute();
+  $query_y = new EntityFieldQuery();
+  $query_y->entityCondition('entity_type', 'user')
+          ->fieldCondition('field_last_payment_date', 'value', $date_y, '>')
+          ->fieldCondition('field_last_payment_amt', 'value', array('39', '60'), 'BETWEEN');
+  $result_y = $query_y->execute();
 
-$paid_user_ids = array_merge(!empty($result_m['user']) ?
-array_keys($result_m['user']) : array(),
-!empty($result_y['user']) ?
-array_keys($result_y['user']) : array());
-}
+  $paid_user_ids = '';
+  $paid_user_ids = array_merge(!empty($result_m['user']) ?
+                   array_keys($result_m['user']) : array(),
+                   !empty($result_y['user']) ?
+                   array_keys($result_y['user']) : array());
 
-$paid_users_loaded = user_load_multiple($paid_user_ids);
-foreach ($paid_users_loaded as $paid_user) {
-$paid_user->roles[5] = 'premium';
-user_save($paid_user);
-}
-  */
+
+  $paid_users_loaded = user_load_multiple($paid_user_ids);
+  foreach ($paid_users_loaded as $paid_user) {
+    $paid_user->roles[5] = 'premium';
+    user_save($paid_user);
+  }
+
 
 }
