@@ -52,6 +52,27 @@ body {
   }
 }
 
+.page-user-edit {
+  #edit-field-paypal-email-field,
+  #edit-field-paypal-trans-id-field,
+  #edit-field-user-first-name,
+  #edit-field-user-last-name,
+  #edit-field-last-payment-date,
+  #edit-field-last-payment-amt {
+    display:none;
+  }
+  &.admin-menu {
+    #edit-field-paypal-email-field,
+    #edit-field-paypal-trans-id-field,
+    #edit-field-user-first-name,
+    #edit-field-user-last-name,
+    #edit-field-last-payment-date,
+    #edit-field-last-payment-amt {
+      display:block;
+    }
+  }
+}
+
 hr {
   border:1px lighten($green, 15%) dashed;
   height: auto;
