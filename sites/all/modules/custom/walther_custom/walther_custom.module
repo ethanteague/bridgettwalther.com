@@ -46,8 +46,22 @@ function walther_custom_menu() {
     'page callback' => 'walther_custom_menu_callback',
     'access callback' => TRUE,
     'file' => 'walther_custom_list.php',
-    //'delivery callback' => 'drupal_json_output',
   );
+
+  $items['membership/payments/paypal/ipn.php'] = array(
+    'title' => 'Paypal IPN Listener',
+    'page callback' => 'walther_custom_menu_callback',
+    'access callback' => TRUE,
+    'file' => 'walther_custom_list.php',
+  );
+
+  $items['members/payment/ipn_subscription.asp'] = array(
+    'title' => 'Paypal IPN Listener',
+    'page callback' => 'walther_custom_menu_callback',
+    'access callback' => TRUE,
+    'file' => 'walther_custom_list.php',
+  );
+
   return $items;
 }
 
@@ -240,13 +254,11 @@ function walther_custom_cron() {
     user_save($unpaid_user);
   }
 
-
 /**
  * Uncomment below block to check for users who are current who need to have
  * premium tag added.  Should not be necessary after initial bulk
  * user import.
  */
-
 
 // Grab users who paid monthly rate in the last month who need to be tagged as such.
   $query_m = new EntityFieldQuery();
@@ -274,6 +286,5 @@ function walther_custom_cron() {
     $paid_user->roles[5] = 'premium';
     user_save($paid_user);
   }
-
 
 }
