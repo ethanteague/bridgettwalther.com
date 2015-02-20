@@ -49,8 +49,9 @@ if (!($res = curl_exec($ch))) {
 curl_close($ch);
 
 // STEP 3: Inspect IPN validation result and act accordingly.
+$custom = array();
 if (strcmp($res, "VERIFIED") == 0) {
-  $custom = array();
+
   // Assign posted variables to local variables.
   if (!empty($_POST['custom'])) {
     $user = user_load($_POST['custom']);
