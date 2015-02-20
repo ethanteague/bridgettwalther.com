@@ -49,9 +49,9 @@ if (!($res = curl_exec($ch))) {
 curl_close($ch);
 
 // STEP 3: Inspect IPN validation result and act accordingly.
-$custom = array();
-if (strcmp($res, "VERIFIED") == 0) {
 
+if (strcmp($res, "VERIFIED") == 0) {
+  $custom = array();
   // Assign posted variables to local variables.
   if (!empty($_POST['custom'])) {
     $user = user_load($_POST['custom']);
@@ -70,13 +70,24 @@ if (strcmp($res, "VERIFIED") == 0) {
   }
 
   $custom['amount'] = $_POST['mc_gross'];
-  $date = strtotime($_POST['payment_date']);
+  if(!empty($_POST['echeck_time_processed'])) {
+    $date = strtotime($_POST['echeck_time_processed']);
+  }
+  else {
+    $date = strtotime($_POST['payment_date']);
+  }
   $custom['date'] = date('Y-m-d', $date);
   $custom['subscr_id'] = $_POST['subscr_id'];
+  $custom['payer_email'] = $_POST['payer_email'];
+  $custom['first_name'] = $_POST['first_name'];
+  $custom['last_name'] = $_POST['last_name'];
 
   $user->roles[5] = 'premium';
   $user->field_last_payment_date['und'][0]['value'] = $custom['date'];
   $user->field_last_payment_amt['und'][0]['value'] = $custom['amount'];
+  $user->field_paypal_email_field['und'][0]['value'] = $custom['payer_email'];
+  $user->field_user_first_name['und'][0]['value'] = $custom['first_name'];
+  $user->field_user_last_name['und'][0]['value'] = $custom['last_name'];
   if (empty($user->field_paypal_trans_id_field['und'][0]['value'])) {
     $user->field_paypal_trans_id_field['und'][0]['value'] = $custom['subscr_id'];
   }
