@@ -69,7 +69,7 @@ if (strcmp($res, "VERIFIED") == 0) {
     $user = user_load($uid_load);
   }
 
-  $custom['amount'] = $_POST['mc_gross'];
+  //$custom['amount'] = $_POST['mc_gross'];
   /* if(!empty($_POST['echeck_time_processed'])) {
     $date = strtotime($_POST['echeck_time_processed']);
   }
@@ -85,13 +85,13 @@ if (strcmp($res, "VERIFIED") == 0) {
 
   $user->roles[5] = 'premium';
   $user->field_last_payment_date['und'][0]['value'] = date('Y-m-d H:m:s');
-  $user->field_last_payment_amt['und'][0]['value'] = $custom['amount'];
   $user->field_paypal_email_field['und'][0]['value'] = $custom['payer_email'];
   $user->field_user_first_name['und'][0]['value'] = $custom['first_name'];
   $user->field_user_last_name['und'][0]['value'] = $custom['last_name'];
   if (empty($user->field_paypal_trans_id_field['und'][0]['value'])) {
     $user->field_paypal_trans_id_field['und'][0]['value'] = $custom['subscr_id'];
   }
+  $user->field_last_payment_amt['und'][0]['value'] = $_POST['payment_gross'];
   user_save($user);
 }
 
