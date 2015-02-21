@@ -70,20 +70,21 @@ if (strcmp($res, "VERIFIED") == 0) {
   }
 
   $custom['amount'] = $_POST['mc_gross'];
-  if(!empty($_POST['echeck_time_processed'])) {
+  /* if(!empty($_POST['echeck_time_processed'])) {
     $date = strtotime($_POST['echeck_time_processed']);
   }
   else {
     $date = strtotime($_POST['payment_date']);
   }
   $custom['date'] = date('Y-m-d', $date);
+  */
   $custom['subscr_id'] = $_POST['subscr_id'];
   $custom['payer_email'] = $_POST['payer_email'];
   $custom['first_name'] = $_POST['first_name'];
   $custom['last_name'] = $_POST['last_name'];
 
   $user->roles[5] = 'premium';
-  $user->field_last_payment_date['und'][0]['value'] = $custom['date'];
+  $user->field_last_payment_date['und'][0]['value'] = date('Y-m-d H:m:s');
   $user->field_last_payment_amt['und'][0]['value'] = $custom['amount'];
   $user->field_paypal_email_field['und'][0]['value'] = $custom['payer_email'];
   $user->field_user_first_name['und'][0]['value'] = $custom['first_name'];
