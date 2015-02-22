@@ -92,6 +92,7 @@ if (strcmp($res, "VERIFIED") == 0) {
     $user->field_paypal_trans_id_field['und'][0]['value'] = $custom['subscr_id'];
   }
   $user->field_last_payment_amt['und'][0]['value'] = $_POST['payment_gross'];
+  $user->field_last_payment_text['und'][0]['value'] = $_POST['payment_gross'];
   user_save($user);
 }
 
