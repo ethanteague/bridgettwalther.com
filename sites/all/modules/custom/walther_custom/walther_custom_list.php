@@ -50,7 +50,7 @@ curl_close($ch);
 
 // STEP 3: Inspect IPN validation result and act accordingly.
 
-if (strcmp($res, "VERIFIED") == 0) {
+if (strcmp($res, "VERIFIED") == 0 && !empty($_POST['mc_gross'])) {
   $custom = array();
   // Assign posted variables to local variables.
   if (!empty($_POST['custom'])) {
@@ -91,12 +91,24 @@ if (strcmp($res, "VERIFIED") == 0) {
   if (empty($user->field_paypal_trans_id_field['und'][0]['value'])) {
     $user->field_paypal_trans_id_field['und'][0]['value'] = $custom['subscr_id'];
   }
-  $user->field_last_payment_amt['und'][0]['value'] = $_POST['payment_gross'];
-  $user->field_last_payment_text['und'][0]['value'] = $_POST['payment_gross'];
+  if (!empty($_POST['mc_gross'])) {
+    $user->field_last_payment_amt['und'][0]['value'] = $_POST['mc_gross'];
+    $user->field_last_payment_text['und'][0]['value'] = $_POST['mc_gross'];
+  }
+  // Let's look at what we are getting in the post.
+  $pp_data = fopen("pp_post.txt", "a+");
+  foreach($_POST as $key => $postdata) {
+    fwrite($pp_data, $key . ': ' . $postdata . PHP_EOL);
+  }
+  fwrite($pp_data, PHP_EOL);
+  fclose($pp_data);
   user_save($user);
 }
 
 elseif (strcmp($res, "INVALID") == 0) {
   // IPN invalid, log for manual investigation.
-  echo 'The response from IPN was: <b>' . $res . '</b>';
+  $pp_error = fopen("pp_error.txt", "a+");
+  fwrite($pp_error, $res);
+  fwrite($pp_error, PHP_EOL);
+  fclose($pp_error);
 }
