@@ -5,6 +5,9 @@
  * Module file for walther_custom.
  */
 
+// Add Analytics.
+drupal_add_js('var _gaq=[["_setAccount","UA-2776345"],["_trackPageview"]];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1; g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js"; s.parentNode.insertBefore(g,s)} (document,"script"));', array(
+  'type' => 'inline', 'scope' => 'footer', 'weight' => 2));
 
 /**
  * Implements hook_block_info().
