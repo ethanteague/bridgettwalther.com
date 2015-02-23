@@ -50,7 +50,7 @@ curl_close($ch);
 
 // STEP 3: Inspect IPN validation result and act accordingly.
 
-if (strcmp($res, "VERIFIED") == 0 && !empty($_POST['mc_gross'])) {
+if (strcmp($res, "VERIFIED") == 0 && !empty($_POST['mc_gross']) && $_POST['txn_type'] != 'subscr_failed') {
   $custom = array();
   // Assign posted variables to local variables.
   if (!empty($_POST['custom'])) {
@@ -97,7 +97,7 @@ if (strcmp($res, "VERIFIED") == 0 && !empty($_POST['mc_gross'])) {
   }
   // Let's look at what we are getting in the post.
   $pp_data = fopen("pp_post.txt", "a+");
-  foreach($_POST as $key => $postdata) {
+  foreach ($_POST as $key => $postdata) {
     fwrite($pp_data, $key . ': ' . $postdata . PHP_EOL);
   }
   fwrite($pp_data, PHP_EOL);
