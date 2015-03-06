@@ -79,6 +79,10 @@ function walther_custom_menu_callback() {
  */
 function walther_custom_form_alter(&$form, &$form_state, $form_id) {
   global $user;
+  if ((in_array('anonymous user', $user->roles)) && $form['form_id']['#id'] == 'edit-ask-node-form') {
+    $form['#validate'][] = 'walther_custom_validate';
+  }
+
   if (!(in_array('administrator', $user->roles)) && $form['form_id']['#id'] == 'edit-ask-node-form--2') {
     $form['field_answer']['#access'] = 0;
     $form['actions']['preview']['#access'] = FALSE;
@@ -100,6 +104,11 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
       unset($form['field_career_meter_number']);
     }
   }
+}
+
+// Validate ask bridgett form user role.
+function walther_custom_validate($form, &$form_state) {
+  form_set_error('denied_role', t('Anonymous users arent allowed to submit forms'));
 }
 
 // Afterbuild function.
