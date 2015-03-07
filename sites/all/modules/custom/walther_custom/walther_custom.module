@@ -79,7 +79,8 @@ function walther_custom_menu_callback() {
  */
 function walther_custom_form_alter(&$form, &$form_state, $form_id) {
   global $user;
-  if ((in_array('anonymous user', $user->roles)) && $form['form_id']['#id'] == 'edit-ask-node-form') {
+  if ((in_array('anonymous user', $user->roles)) && $form['form_id']['#id'] == 'edit-ask-node-form'
+    || (in_array('no-ask', $user->roles)) && $form['form_id']['#id'] == 'edit-ask-node-form') {
     $form['#validate'][] = 'walther_custom_validate';
   }
 
@@ -108,7 +109,7 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
 
 // Validate ask bridgett form user role.
 function walther_custom_validate($form, &$form_state) {
-  form_set_error('denied_role', t('Anonymous users arent allowed to submit forms'));
+  form_set_error('denied_role', t('You aren\'t allowed to ask questions.'));
 }
 
 // Afterbuild function.
