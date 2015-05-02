@@ -132,7 +132,7 @@ hr {
 }
 
 .walther-header {
-    background: $charcoal image-url('eyes.png') top center no-repeat;
+  background: $charcoal image-url('eyes.png') top center no-repeat;
 
   font-family: $serif-large;
   color: $grey;
@@ -176,8 +176,8 @@ hr {
     font-size:22px;
   }
   a, a:link, a.visited, a:visited {
-    color: $gold;
-  }
+			  color: $gold;
+			}
   .item-list.item-list-main-menu {
     position:relative;
     .menu-toggle {
@@ -194,7 +194,20 @@ hr {
     }
   }
 }
+
+.header-type-style{}
 #mini-panel-site_header{
+  .walther-logo-mini {
+    > div {
+      font-size:38px;
+      @media (max-width: 500px) {
+	font-size:28px;
+      }
+    }
+    h1{
+      display:none;
+    }
+  }
   h4{
     margin: 10px;
     @media all and (max-width: 500px) {

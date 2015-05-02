@@ -23,7 +23,7 @@
         if(!$(this).prev().hasClass('menu-toggle')) {
           // Drop in our menu toggle.
           var title = Drupal.t('Toggle Menu');
-          $(this).before('<a class="menu-toggle" title="' + title + '"><span class="line first-line first"></span><span class="line"></span><span class="line last-line last"></span><span class="toggle-help">' + menuToggleHelper + '</span></a>');
+          $(this).before('<a class="menu-toggle" title="' + title + '"><span class="lines"><span class="line first-line first"></span><span class="line"></span><span class="line last-line last"></span></span><span class="toggle-help">' + menuToggleHelper + '</span></a>');
         }
       });
 
@@ -38,10 +38,10 @@
     attach: function(context) {
       $('.responsive-menu li.menu-parent').hover(
         function() {
-          $(this).find('.sub-menu').addClass('active');
+          $(this).children('.sub-menu').addClass('active');
         },
         function() {
-          $(this).find('.sub-menu').removeClass('active');
+          $(this).children('.sub-menu').removeClass('active');
         }
       );
     }

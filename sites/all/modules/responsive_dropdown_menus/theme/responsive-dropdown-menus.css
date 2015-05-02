@@ -1,21 +1,23 @@
 /**
 * Menu toggle base styling
 */
-.menu-toggle {
-  position: relative;
+.menu-toggle{
   display: block;
+  cursor: pointer;
+  height:36px;
+}
+.menu-toggle .lines {
+  display: block;
+  float: left;
   margin: 0;
   padding: 4px 3px;
   width: 36px;
   border-radius: 3px;
-  cursor: pointer;
 }
 .menu-toggle .toggle-help {
-    position: absolute;
-    left: 45px;
-    top: 7px;
-    margin: 0;
-    padding: 0 0 10px 0;
+  float: left;
+  height:36px;
+  line-height: 36px;
 }
 .menu-toggle .line {
   display: block;
@@ -28,6 +30,9 @@
 /**
  * Ensures in mobile our menus stack
  */
+.responsive-menu {
+  clear: both;
+}
 .responsive-menu,
 .responsive-menu.links.inline {
   max-height: 0;

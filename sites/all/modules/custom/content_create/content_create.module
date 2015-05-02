@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Module file for content_create.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function content_create_block_info() {
+  $block = array();
+
+  $block['todays_content'] = array(
+    'info' => t("Today's Content"),
+  );
+
+  return $block;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function content_create_menu() {
+
+  $items['content_create_page'] = array(
+    'title' => 'Content Create Page',
+    'page callback' => 'content_create_menu_callback',
+    'access callback' => TRUE,
+    'file' => 'content_create_text.php',
+  );
+
+  return $items;
+}
+
+/**
+ * Nothing to see here.
+ */
+function content_create_menu_callback() {
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function content_create_block_view($block_key) {
+
+  switch ($block_key) {
+    case 'graphs_feature':
+      $block['subject'] = 'Content Create Block';
+      $block['content'] = '';
+      break;
+
+    default:
+      '';
+  }
+
+  return $block;
+}
