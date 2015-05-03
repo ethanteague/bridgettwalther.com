@@ -88,10 +88,12 @@ function walther_custom_form_alter(&$form, &$form_state, $form_id) {
     $form['field_answer']['#access'] = 0;
     $form['actions']['preview']['#access'] = FALSE;
   }
+
   if ($form_id == 'page_node_form') {
 
     if (!(in_array('administrator', $user->roles))) {
       $form['field_tags']['#access'] = 0;
+      $form['title']['#access'] = 0;
       $form['#after_build'][] = 'walther_custom_node_form_after_build';
     }
     $form['field_love_paragraph']['und'][0]['#format'] = 'filtered_html';
